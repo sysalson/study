@@ -1,0 +1,17 @@
+#服务配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+#使用jsp作为模板
+spring:
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/view/
+  thymeleaf:
+    cache: false
+    enabled: false
+
+
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--日志配置   效果:不同级别日志配置到不同的日志文件中,且只输出自身级别的日志信息
+                https://blog.csdn.net/tianyaleixiaowu/article/details/73327752
+-->
+<!--
+日志级别查看 shift+ctrl+r ===> level    数值越大级别越高,重要性越大
+    ERROR(40, "ERROR"),
+    WARN(30, "WARN"),
+    INFO(20, "INFO"),
+    DEBUG(10, "DEBUG"),
+    TRACE(0, "TRACE");
+-->
+<configuration>
+
+    <!--控制台日志-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p][%c][%M][%L]-> %m%n</pattern>
+        </layout>
+    </appender>
+
+    <!--debug级别日志-->
+    <appender name="fileDebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>                     <!--设置拦截的对象为DEBUG级别日志-->
+            <onMatch>ACCEPT</onMatch>                <!-- 当遇到了DEBUG级别时,启用改段配置.-->
+            <onMismatch>DENY</onMismatch>            <!-- 没有遇到DEBUG级别日志时,屏蔽改段配置-->
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p][%c][%M][%L]-> %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/log/debug/debug.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--info级别日志-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p][%c][%M][%L]-> %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--设置滚动策略  按时间策略来生成日志-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/log/info/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+    <!--error级别日志-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p][%c][%M][%L]-> %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--设置滚动策略  按时间策略来生成日志-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/log/error/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--根节点配置-->
+    <root level="info">
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileErrorLog"/>
+        <appender-ref ref="fileDebugLog"/>
+        <appender-ref ref="consoleLog"/>
+    </root>
+</configuration>

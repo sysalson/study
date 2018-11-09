@@ -1,0 +1,3 @@
+com\templates\DemoApplication.class
+com\templates\Controller\IndexController.class
+com\templates\Controller\TestController.class
